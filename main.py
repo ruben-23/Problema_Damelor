@@ -13,7 +13,7 @@ class Individ:
 
        ...
 
-def generare_populatie(nr_indivizi, n):
+def generare_cromozomi(nr_indivizi, n):
 
     cromozomi = set()
     
@@ -26,6 +26,17 @@ def generare_populatie(nr_indivizi, n):
             nr_indivizi -= 1
 
     return cromozomi
+
+
+def generare_populatie_initiala(nr_indivizi, n):
+
+    populatie = []
+    cromozomi = generare_cromozomi(nr_indivizi, n)
+
+    for cromozom in cromozomi:
+        populatie.append(Individ(cromozom))
+    
+    return populatie
 
 populatie = generare_populatie(10, 4)
 for individ in populatie:
