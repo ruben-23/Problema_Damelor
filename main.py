@@ -12,6 +12,8 @@ class Individ:
     def calc_fitness(self):
 
        atacuri_rand=atac_randuri(self.cromozom)
+       atacuri_diagonala = atacuri_diagonale(self.cromozom)
+       self.fitness =atacuri_rand + atacuri_diagonala
     
 def numara_atacuri_rand(regine):
 
