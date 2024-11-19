@@ -13,6 +13,30 @@ class Individ:
 
        ...
 
+def numara_atacuri_rand(regine):
+
+    nr_atacuri = 0
+    for i in range(regine):
+       nr_atacuri += i
+
+    return nr_atacuri
+
+def atac_randuri(cromozom):
+
+    atacuri = 0
+    aparitii = {}
+    # print("cromozom:", cromozom)
+    for i in range(len(cromozom)):
+        aparitii[cromozom[i]] = cromozom.count(cromozom[i])
+    
+    for regine in aparitii.values():
+        atac_rand = numara_atacuri_rand(regine)
+        # print(f'Regine pe randul {rand}: {regine}\nAtacuri: {atac_rand}')
+        atacuri += atac_rand
+    
+    return atacuri
+
+
 def generare_cromozomi(nr_indivizi, n):
 
     cromozomi = set()
