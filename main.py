@@ -25,13 +25,14 @@ def atac_randuri(cromozom):
 
     atacuri = 0
     aparitii = {}
-    # print("cromozom:", cromozom)
+
+    # numara cate regine sunt pe fiecare rand
     for i in range(len(cromozom)):
         aparitii[cromozom[i]] = cromozom.count(cromozom[i])
     
+    # numara atacurile de pe fiecare rand
     for regine in aparitii.values():
         atac_rand = numara_atacuri_rand(regine)
-        # print(f'Regine pe randul {rand}: {regine}\nAtacuri: {atac_rand}')
         atacuri += atac_rand
     
     return atacuri
