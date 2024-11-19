@@ -12,7 +12,7 @@ class Individ:
     def calc_fitness(self):
 
        atacuri_rand=atac_randuri(self.cromozom)
-
+    
 def numara_atacuri_rand(regine):
 
     nr_atacuri = 0
@@ -37,6 +37,20 @@ def atac_randuri(cromozom):
     
     return atacuri
 
+def atacuri_diagonale(cromozom):
+
+    atacuri = 0
+
+    for i in range(len(cromozom)):
+        for j in range(len(cromozom)):
+            if(i != j):
+                diferenta_coloane = abs(i-j)
+                diferenta_linii = abs(cromozom[i] - cromozom[j])
+
+                if(diferenta_coloane == diferenta_linii):
+                    atacuri += 1
+
+    return ( atacuri // 2 )
 
 def generare_cromozomi(nr_indivizi, n):
 
