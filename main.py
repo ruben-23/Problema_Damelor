@@ -52,6 +52,7 @@ def atacuri_diagonale(cromozom):
                 if(diferenta_coloane == diferenta_linii):
                     atacuri += 1
 
+    # jumatate atacurile deorece vrem doar un singur atac intre doua regine (r1-r2 nu si r2-r1)
     return ( atacuri // 2 )
 
 def generare_cromozomi(nr_indivizi, n):
