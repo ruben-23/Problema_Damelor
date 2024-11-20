@@ -156,7 +156,7 @@ def generare_copii(parinti):
     return copii
 
 
-def verifica_solutie(populatie):
+def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
     solutii = []
 
@@ -205,7 +205,7 @@ copii = generare_copii(parinti)
 for copil in copii:
     print(copil.cromozom, copil.fitness)
 
-solutii = verifica_solutie(copii)
+solutii = verifica_solutii(copii)
 print("Solutii copii: ", len(solutii))
 for i in solutii:
     print(i.cromozom)
