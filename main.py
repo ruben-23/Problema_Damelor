@@ -180,7 +180,7 @@ def factorial(n):
     
     return n * factorial(n-1) 
 
-nr_indivizi = 50000
+nr_indivizi = 500
 n = 15         
 max_indivizi = factorial(n)
 
@@ -190,7 +190,7 @@ if( nr_indivizi > max_indivizi ):
           \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
     exit(1)
 
-populatie = generare_populatie_initiala(10, 4)
+populatie = generare_populatie_initiala(nr_indivizi, n)
 #for individ in populatie:
     #print(individ.cromozom, individ.fitness)
 
