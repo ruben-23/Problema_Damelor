@@ -155,6 +155,23 @@ def generare_copii(parinti):
 
     return copii
 
+def factorial(n):
+
+    if(n == 1):
+        return 1
+    
+    return n * factorial(n-1) 
+
+nr_indivizi = 50000
+n = 15         
+max_indivizi = factorial(n)
+
+# nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
+if( nr_indivizi > max_indivizi ):
+    print(f"Nu se pot genera {nr_indivizi} de indivizi.\
+          \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
+    exit(1)
+
 populatie = generare_populatie_initiala(10, 4)
 #for individ in populatie:
     #print(individ.cromozom, individ.fitness)
@@ -169,4 +186,7 @@ copii = generare_copii(parinti)
 
 for copil in copii:
     print(copil.cromozom, copil.fitness)
-print("Indivizi in populatie", len(populatie))
+
+print("Copii obtinutii: ", len(copii))
+
+# print("Indivizi in populatie", len(populatie))
