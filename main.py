@@ -11,34 +11,9 @@ class Individ:
 
     def calc_fitness(self):
 
-       atacuri_rand=atac_randuri(self.cromozom)
        atacuri_diagonala = atacuri_diagonale(self.cromozom)
 
-       self.fitness = atacuri_rand + atacuri_diagonala
-    
-def numara_atacuri_rand(regine):
-
-    nr_atacuri = 0
-    for i in range(regine):
-       nr_atacuri += i
-
-    return nr_atacuri
-
-def atac_randuri(cromozom):
-
-    atacuri = 0
-    aparitii = {}
-
-    # numara cate regine sunt pe fiecare rand
-    for i in range(len(cromozom)):
-        aparitii[cromozom[i]] = cromozom.count(cromozom[i])
-    
-    # numara atacurile de pe fiecare rand
-    for regine in aparitii.values():
-        atac_rand = numara_atacuri_rand(regine)
-        atacuri += atac_rand
-    
-    return atacuri
+       self.fitness = atacuri_diagonala
 
 def atacuri_diagonale(cromozom):
 
