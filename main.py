@@ -80,14 +80,30 @@ def selectare_parinti(populatie):
 
     return parinti
 
+def exista_duplicate(copil):
+
+     for i in range(len(copil)):
+         if i not in copil:
+             return True
+     return False
+
+#print(exista_duplicate([1,2,3,1]))
+
+
 def crossover(parinte1, parinte2):
 
-    print("\nparinti:", parinte1, parinte2)
+    #print("\nparinti:", parinte1, parinte2)
     taietura = random.randint(0,len(parinte1)-1)
-    print(taietura)
+    #print(taietura)
 
     copil1 =  parinte1[:taietura] + parinte2[taietura:] 
     copil2 =  parinte2[:taietura] + parinte1[taietura:] 
+
+    if exista_duplicate(copil1):
+            print(copil1)
+    
+    if exista_duplicate(copil2):
+            print(copil2)
 
     print("copii", copil1, copil2)
 
