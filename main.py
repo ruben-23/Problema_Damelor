@@ -157,7 +157,7 @@ def generare_copii(parinti):
 
 
 def verifica_solutie(populatie):
-
+    # verifica daca in populatie exista solutii
     solutii = []
 
     for individ in populatie:
