@@ -155,6 +155,13 @@ def generare_copii(parinti):
 
     return copii
 
+def exista_duplicate_copii(copii):
+    # verifica daca cel putin un copil are un element duplicat in cromozom
+    for copil in copii:
+        if exista_duplicate(copil.cromozom):
+            return True
+    return False
+
 def factorial(n):
 
     if(n == 1):
@@ -188,5 +195,5 @@ for copil in copii:
     print(copil.cromozom, copil.fitness)
 
 print("Copii obtinutii: ", len(copii))
-
+print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
 # print("Indivizi in populatie", len(populatie))
