@@ -178,7 +178,7 @@ def mutatie(populatie, rata_mutatie):
             mutatie_cromozom(individ)
             mutatii += 1
 
-    print("Mutatii efectuate:", mutatii)
+    # print("Mutatii efectuate:", mutatii)
 
 #mutatie( [Individ([0,2,1,3]), Individ([2,1,3,0])] )
 
@@ -206,38 +206,57 @@ def factorial(n):
     
     return n * factorial(n-1) 
 
-nr_indivizi = 500
-n = 15         
-max_indivizi = factorial(n)
-rata_mutatie = 0.5
+def start():
+    nr_indivizi = 10000
+    n = 8         
+    max_indivizi = factorial(n)
+    rata_mutatie = 0.5
+    
+    # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
+    if( nr_indivizi > max_indivizi ):
+        print(f"Nu se pot genera {nr_indivizi} de indivizi.\
+            \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
+        exit(1)
 
-# nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
-if( nr_indivizi > max_indivizi ):
-    print(f"Nu se pot genera {nr_indivizi} de indivizi.\
-          \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
-    exit(1)
+    populatie = generare_populatie_initiala(nr_indivizi, n)
+    generatie = 1
 
-populatie = generare_populatie_initiala(nr_indivizi, n)
+    while not verifica_solutii(populatie):
+        parinti = selectare_parinti(populatie)
+        copii = generare_copii(parinti)
+        mutatie(copii, rata_mutatie)
+        generatie += 1
+        populatie = copii
+    
+    solutii = verifica_solutii(populatie)
+    print(f'Solutii gasite in generatia {generatie}: {len(solutii)}')
+    for i in solutii:
+        print(i.cromozom)
+        
+start()
+
+
+# populatie = generare_populatie_initiala(nr_indivizi, n)
 #for individ in populatie:
     #print(individ.cromozom, individ.fitness)
 
-parinti = selectare_parinti(populatie)
+# parinti = selectare_parinti(populatie)
 
 #for (p1, p2) in parinti:
     #print(p1.cromozom, p2.cromozom)
 
 #print("Parinti generati: ", len(parinti))
-copii = generare_copii(parinti)
-mutatie(copii, rata_mutatie)
+# copii = generare_copii(parinti)
+# mutatie(copii, rata_mutatie)
 
 # for copil in copii:
 #     print(copil.cromozom, copil.fitness)
 
-solutii = verifica_solutii(copii)
-print("Solutii copii: ", len(solutii))
-for i in solutii:
-    print(i.cromozom)
+# solutii = verifica_solutii(copii)
+# print("Solutii copii: ", len(solutii))
+# for i in solutii:
+#     print(i.cromozom)
 
-print("Copii obtinuti: ", len(copii))
-print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
+# print("Copii obtinuti: ", len(copii))
+# print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
 # print("Indivizi in populatie:", len(populatie))
