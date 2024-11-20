@@ -2,6 +2,9 @@ import random
 
 class Individ:
 
+    # pozitiile listei cromozom sunt coloanele tablei
+    # valorile sunt liniile pe care sunt asezate reginele
+    # ex. [1,2,0,3] - pe coloana 0, linia 1 este o regina, pe coloana 1 linia 2 alta regina etc. 
     cromozom = []
     fitness = 0
 
