@@ -139,7 +139,18 @@ def crossover(parinte1, parinte2):
     # print("copii", copil1, copil2)
     return (copil1, copil2)
 
-crossover([0,1,2,3], [3,1,2,0])
+#crossover([0,1,2,3], [3,1,2,0])
+def generare_copii(parinti):
+
+    copii = []
+
+    for (p1, p2) in parinti:
+        # crossover returneaza un tuplu cu 2 copii si in lista copii nu dorim tupluri de 2 copii
+        copii_obtinuti = crossover(p1.cromozom, p2.cromozom)
+        copii.append(Individ(copii_obtinuti[0]))
+        copii.append(Individ(copii_obtinuti[1]))
+
+    return copii
 
 populatie = generare_populatie_initiala(10, 4)
 #for individ in populatie:
@@ -147,8 +158,12 @@ populatie = generare_populatie_initiala(10, 4)
 
 parinti = selectare_parinti(populatie)
 
-for (p1, p2) in parinti:
-    print(p1.cromozom, p2.cromozom)
+#for (p1, p2) in parinti:
+    #print(p1.cromozom, p2.cromozom)
 
-print("Parinti generati: ", len(parinti))
+#print("Parinti generati: ", len(parinti))
+copii = generare_copii(parinti)
+
+for copil in copii:
+    print(copil.cromozom, copil.fitness)
 print("Indivizi in populatie", len(populatie))
