@@ -13,7 +13,8 @@ class Individ:
 
        atacuri_rand=atac_randuri(self.cromozom)
        atacuri_diagonala = atacuri_diagonale(self.cromozom)
-       self.fitness =atacuri_rand + atacuri_diagonala
+
+       self.fitness = atacuri_rand + atacuri_diagonala
     
 def numara_atacuri_rand(regine):
 
@@ -43,8 +44,8 @@ def atacuri_diagonale(cromozom):
 
     atacuri = 0
 
-    for i in range(len(cromozom)):
-        for j in range(len(cromozom)):
+    for i in range(len(cromozom)-1):
+        for j in range(i+1, len(cromozom)):
             if(i != j):
                 diferenta_coloane = abs(i-j)
                 diferenta_linii = abs(cromozom[i] - cromozom[j])
@@ -52,8 +53,7 @@ def atacuri_diagonale(cromozom):
                 if(diferenta_coloane == diferenta_linii):
                     atacuri += 1
 
-    # jumatate atacurile deorece vrem doar un singur atac intre doua regine (r1-r2 nu si r2-r1)
-    return ( atacuri // 2 )
+    return atacuri
 
 def generare_cromozomi(nr_indivizi, n):
 
