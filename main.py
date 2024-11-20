@@ -117,12 +117,7 @@ def corecteaza_cromozom(copil):
 # print(corecteaza_cromozom([0,1,2,0]))
 
 def exista_duplicate(copil):
-
-     for i in range(len(copil)):
-         if i not in copil:
-             return True
-     return False
-
+    return len(set(copil)) < len(copil)
 #print(exista_duplicate([1,2,3,1]))
 
 def crossover(parinte1, parinte2):
