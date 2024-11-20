@@ -80,6 +80,42 @@ def selectare_parinti(populatie):
 
     return parinti
 
+def corecteaza_cromozom(copil):
+
+    n = len(copil)
+    
+    # gasire elemente lipsa
+    lipsa = []
+    for i in range(n):
+        if i not in set(copil):
+            lipsa.append(i)  
+            
+    # gaseste pozitiile tuturor elementelor din copil
+    # cheia = elementul, valoarea = set cu pozitiile (ex. 0: {2, 3} )
+    pozitii = {}
+    for pozitie, element in enumerate(copil):
+        if element in pozitii:
+            pozitii[element].add(pozitie)
+        else:
+            pozitii[element] = {pozitie}
+
+    # print("pozitii:", pozitii)        
+
+    # gasire element care se afla pe mai multe pozitii
+    # pe una dintre pozitii se pune elementul lipsa
+    k=0
+    for element, valoare in pozitii.items():
+
+        if(len(valoare) > 1):
+            # print(element, valoare)
+            i = random.choice(list(valoare))
+            copil[i] = lipsa[k]
+            k += 1
+            
+    return copil    
+
+# print(corecteaza_cromozom([0,1,2,0]))
+
 def exista_duplicate(copil):
 
      for i in range(len(copil)):
@@ -88,7 +124,6 @@ def exista_duplicate(copil):
      return False
 
 #print(exista_duplicate([1,2,3,1]))
-
 
 def crossover(parinte1, parinte2):
 
@@ -100,12 +135,14 @@ def crossover(parinte1, parinte2):
     copil2 =  parinte2[:taietura] + parinte1[taietura:] 
 
     if exista_duplicate(copil1):
-            print(copil1)
-    
+            # print(copil1)
+            copil1 = corecteaza_cromozom(copil1)
     if exista_duplicate(copil2):
-            print(copil2)
+            # print(copil2)
+            copil2 = corecteaza_cromozom(copil2)
 
-    print("copii", copil1, copil2)
+    # print("copii", copil1, copil2)
+    return (copil1, copil2)
 
 crossover([0,1,2,3], [3,1,2,0])
 
