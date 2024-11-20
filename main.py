@@ -208,83 +208,6 @@ def factorial(n):
     
     return n * factorial(n-1) 
 
-import tkinter as tk
-
-class ChessBoard:
-    def __init__(self, master, arrangements, generatie):
-        self.master = master
-        self.arrangements = arrangements
-        self.current_index = 0
-        self.generatie = generatie
-
-        # Total arrangements and current arrangement display
-        self.total_label = tk.Label(master, text=f"Solutii gasite in generatia {self.generatie}: {len(arrangements)}", font=("Arial", 14))
-        self.total_label.pack()
-
-        self.current_label = tk.Label(master, text=f"Solutia curenta: {arrangements[0].cromozom}", font=("Arial", 14))
-        self.current_label.pack()
-
-        # Create canvas for the chessboard
-        self.canvas = tk.Canvas(master, width=800, height=800)  # Adjust for space for numbers
-        self.canvas.pack()
-
-        # Next button
-        self.next_button = tk.Button(master, text="Next", command=self.show_next)
-        self.next_button.pack()
-
-        # Load the queen image
-        self.queen_image = tk.PhotoImage(file="regina.png")
-
-        # Draw the first arrangement
-        self.draw_chess_board(arrangements[self.current_index].cromozom)
-
-    def draw_chess_board(self, queens):
-        self.canvas.delete("all")
-        square_size = 50
-        offset = 25  # Space for row and column numbers
-
-        # Draw row numbers
-        for row in range(len(queens)):
-            self.canvas.create_text(
-                offset // 2, row * square_size + square_size // 2 + offset,
-                text=str(row), font=("Arial", 14), fill="black"
-            )
-
-        # Draw column numbers
-        for col in range(len(queens)):
-            self.canvas.create_text(
-                col * square_size + square_size // 2 + offset, offset // 2,
-                text=str(col), font=("Arial", 14), fill="black"
-            )
-
-        # Draw the chessboard
-        for row in range(len(queens)):
-            for col in range(len(queens)):
-                color = "white" if (row + col) % 2 == 0 else "black"
-                self.canvas.create_rectangle(
-                    col * square_size + offset, row * square_size + offset,
-                    col * square_size + square_size + offset, row * square_size + square_size + offset,
-                    fill=color
-                )
-
-        # Draw the queens
-        for col, row in enumerate(queens):
-            if row != -1:
-                x_center = col * square_size + square_size // 2 + offset
-                y_center = row * square_size + square_size // 2 + offset
-                self.canvas.create_image(x_center, y_center, image=self.queen_image)
-
-    def show_next(self):
-        # Move to the next arrangement
-        self.current_index = (self.current_index + 1) % len(self.arrangements)
-        current_arrangement = self.arrangements[self.current_index].cromozom
-
-        # Update the board and the current arrangement label
-        self.draw_chess_board(current_arrangement)
-        self.current_label.config(text=f"Solutia curenta: {current_arrangement}")
-
-
-
 def start():
     nr_indivizi = 1000
     n = 10         
@@ -311,16 +234,6 @@ def start():
     print(f'Solutii gasite in generatia {generatie}: {len(solutii)}')
     for i in solutii:
         print(i.cromozom, i.fitness)
-
-    # Create the main window
-    root = tk.Tk()
-    root.title("Chess Board")
-
-    # Create the ChessBoard interface
-    chess_board = ChessBoard(root, solutii, generatie)
-
-    # Start the GUI event loop
-    root.mainloop()
         
 start()
 
