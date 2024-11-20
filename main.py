@@ -170,12 +170,11 @@ def mutatie_cromozom(individ):
     # adaugare cromozom schimbat la individ
     individ.cromozom = cromozom
 
-def mutatie(populatie):
+def mutatie(populatie, rata_mutatie):
 
-    nr = 100
     mutatii=0
     for individ in populatie:
-        if random.randint(1, nr) > nr//2:
+        if random.random() < rata_mutatie:
             mutatie_cromozom(individ)
             mutatii += 1
 
@@ -210,6 +209,7 @@ def factorial(n):
 nr_indivizi = 500
 n = 15         
 max_indivizi = factorial(n)
+rata_mutatie = 0.5
 
 # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
 if( nr_indivizi > max_indivizi ):
@@ -228,7 +228,7 @@ parinti = selectare_parinti(populatie)
 
 #print("Parinti generati: ", len(parinti))
 copii = generare_copii(parinti)
-mutatie(copii)
+mutatie(copii, rata_mutatie)
 
 # for copil in copii:
 #     print(copil.cromozom, copil.fitness)
