@@ -86,6 +86,32 @@ def generare_populatie_initiala(nr_indivizi, n):
     
     return populatie
 
+def selectare_parinti(populatie):
+
+    parinti = []
+    n = len(populatie)
+
+    for i in range(n//2):
+
+        parinte1 = populatie[random.randint(0,len(populatie)-1)]
+        # print(parinte1.cromozom)
+                              
+        parinte2 = populatie[random.randint(0,len(populatie)-1)]
+        # print(parinte2.cromozom)
+
+        parinti.append((parinte1, parinte2))
+
+    return parinti
+
+
+
 populatie = generare_populatie_initiala(10, 4)
-for individ in populatie:
-    print(individ.cromozom, individ.fitness)
+#for individ in populatie:
+    #print(individ.cromozom, individ.fitness)
+
+parinti = selectare_parinti(populatie)
+
+for (p1, p2) in parinti:
+    print(p1.cromozom, p2.cromozom)
+
+print("Parinti generati: ", len(parinti))
