@@ -155,6 +155,17 @@ def generare_copii(parinti):
 
     return copii
 
+
+def verifica_solutie(populatie):
+
+    solutii = []
+
+    for individ in populatie:
+        if individ.fitness == 0:
+            solutii.append(individ)
+    
+    return solutii
+
 def exista_duplicate_copii(copii):
     # verifica daca cel putin un copil are un element duplicat in cromozom
     for copil in copii:
@@ -193,6 +204,11 @@ copii = generare_copii(parinti)
 
 for copil in copii:
     print(copil.cromozom, copil.fitness)
+
+solutii = verifica_solutie(copii)
+print("Solutii copii: ", len(solutii))
+for i in solutii:
+    print(i.cromozom)
 
 print("Copii obtinutii: ", len(copii))
 print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
