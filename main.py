@@ -104,8 +104,8 @@ def corecteaza_cromozom(copil):
 
     # print("pozitii:", pozitii)        
 
-    # gasire element care se afla pe mai multe pozitii
-    # pe una dintre pozitii se pune elementul lipsa
+    # gasire elemente care se afla pe mai multe pozitii
+    # pe una dintre pozitii se pune un element lipsa
     k=0
     for element, valoare in pozitii.items():
 
@@ -155,6 +155,32 @@ def generare_copii(parinti):
 
     return copii
 
+def mutatie_cromozom(individ):
+
+    cromozom = individ.cromozom
+
+    # folosire sample pt ca sa nu avem ambele pozitii la fel
+    poz1, poz2 = random.sample(range(len(cromozom)), 2)
+    # print("pozitii", pozitii)
+
+    # interschimbare elemente de pe pozitiile generate
+    cromozom[poz1], cromozom[poz2] = cromozom[poz2], cromozom[poz1]
+    # print(cromozom)
+
+    # adaugare cromozom schimbat la individ
+    individ.cromozom = cromozom
+
+def mutatie(populatie, rata_mutatie):
+
+    mutatii=0
+    for individ in populatie:
+        if random.random() < rata_mutatie:
+            mutatie_cromozom(individ)
+            mutatii += 1
+
+    print("Mutatii efectuate:", mutatii)
+
+#mutatie( [Individ([0,2,1,3]), Individ([2,1,3,0])] )
 
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
@@ -183,6 +209,7 @@ def factorial(n):
 nr_indivizi = 500
 n = 15         
 max_indivizi = factorial(n)
+rata_mutatie = 0.5
 
 # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
 if( nr_indivizi > max_indivizi ):
@@ -201,15 +228,16 @@ parinti = selectare_parinti(populatie)
 
 #print("Parinti generati: ", len(parinti))
 copii = generare_copii(parinti)
+mutatie(copii, rata_mutatie)
 
-for copil in copii:
-    print(copil.cromozom, copil.fitness)
+# for copil in copii:
+#     print(copil.cromozom, copil.fitness)
 
 solutii = verifica_solutii(copii)
 print("Solutii copii: ", len(solutii))
 for i in solutii:
     print(i.cromozom)
 
-print("Copii obtinutii: ", len(copii))
+print("Copii obtinuti: ", len(copii))
 print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
-# print("Indivizi in populatie", len(populatie))
+# print("Indivizi in populatie:", len(populatie))
