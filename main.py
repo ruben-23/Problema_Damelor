@@ -95,9 +95,11 @@ def selectare_parinti(populatie):
 
         parinte1 = populatie[random.randint(0,len(populatie)-1)]
         # print(parinte1.cromozom)
-                              
+        populatie.remove(parinte1)                      
+        
         parinte2 = populatie[random.randint(0,len(populatie)-1)]
         # print(parinte2.cromozom)
+        populatie.remove(parinte2)
 
         parinti.append((parinte1, parinte2))
 
@@ -115,3 +117,4 @@ for (p1, p2) in parinti:
     print(p1.cromozom, p2.cromozom)
 
 print("Parinti generati: ", len(parinti))
+print("Indivizi in populatie", len(populatie))
