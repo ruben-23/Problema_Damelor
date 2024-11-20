@@ -80,7 +80,18 @@ def selectare_parinti(populatie):
 
     return parinti
 
+def crossover(parinte1, parinte2):
 
+    print("\nparinti:", parinte1, parinte2)
+    taietura = random.randint(0,len(parinte1)-1)
+    print(taietura)
+
+    copil1 =  parinte1[:taietura] + parinte2[taietura:] 
+    copil2 =  parinte2[:taietura] + parinte1[taietura:] 
+
+    print("copii", copil1, copil2)
+
+crossover([0,1,2,3], [3,1,2,0])
 
 populatie = generare_populatie_initiala(10, 4)
 #for individ in populatie:
