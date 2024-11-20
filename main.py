@@ -155,6 +155,34 @@ def generare_copii(parinti):
 
     return copii
 
+def mutatie_cromozom(individ):
+
+    cromozom = individ.cromozom
+
+    # folosire sample pt ca sa nu avem ambele pozitii la fel
+    poz1, poz2 = random.sample(range(len(cromozom)), 2)
+    # print("pozitii", pozitii)
+
+    # interschimbare elemente de pe pozitiile generate
+    cromozom[poz1], cromozom[poz2] = cromozom[poz2], cromozom[poz1]
+    # print(cromozom)
+
+    # adaugare cromozom schimbat la individ
+    individ.cromozom = cromozom
+
+def mutatie(populatie):
+
+    nr = 100
+    mutatii=0
+    for individ in populatie:
+        if random.randint(1, nr) > nr//2:
+            mutatie_cromozom(individ)
+            mutatii += 1
+
+    print("Mutatii efectuate:", mutatii)
+
+#mutatie( [Individ([0,2,1,3]), Individ([2,1,3,0])] )
+
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
     solutii = []
@@ -200,9 +228,10 @@ parinti = selectare_parinti(populatie)
 
 #print("Parinti generati: ", len(parinti))
 copii = generare_copii(parinti)
+mutatie(copii)
 
-for copil in copii:
-    print(copil.cromozom, copil.fitness)
+# for copil in copii:
+#     print(copil.cromozom, copil.fitness)
 
 solutii = verifica_solutii(copii)
 print("Solutii copii: ", len(solutii))
