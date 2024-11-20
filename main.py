@@ -104,8 +104,8 @@ def corecteaza_cromozom(copil):
 
     # print("pozitii:", pozitii)        
 
-    # gasire element care se afla pe mai multe pozitii
-    # pe una dintre pozitii se pune elementul lipsa
+    # gasire elemente care se afla pe mai multe pozitii
+    # pe una dintre pozitii se pune un element lipsa
     k=0
     for element, valoare in pozitii.items():
 
@@ -154,7 +154,6 @@ def generare_copii(parinti):
         copii.append(Individ(copii_obtinuti[1]))
 
     return copii
-
 
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
@@ -210,6 +209,6 @@ print("Solutii copii: ", len(solutii))
 for i in solutii:
     print(i.cromozom)
 
-print("Copii obtinutii: ", len(copii))
+print("Copii obtinuti: ", len(copii))
 print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
-# print("Indivizi in populatie", len(populatie))
+# print("Indivizi in populatie:", len(populatie))
