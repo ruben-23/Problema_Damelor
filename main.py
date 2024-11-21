@@ -56,7 +56,6 @@ def generare_populatie_initiala(nr_indivizi, n):
 
     # se genereaza un set de cromozomi
     cromozomi = generare_cromozomi(nr_indivizi, n)
-    # print("cromozomi", cromozomi, type(cromozomi))
 
     # se formeaza o populatie de indivizi folosind cromozomii obtinuti
     for cromozom in cromozomi:
@@ -72,11 +71,9 @@ def selectare_parinti(populatie):
     for i in range(n//2):
 
         parinte1 = populatie[random.randint(0,len(populatie)-1)]
-        # print(parinte1.cromozom)
         populatie.remove(parinte1)                      
         
         parinte2 = populatie[random.randint(0,len(populatie)-1)]
-        # print(parinte2.cromozom)
         populatie.remove(parinte2)
 
         parinti.append((parinte1, parinte2))
@@ -102,47 +99,35 @@ def corecteaza_cromozom(copil):
         else:
             pozitii[element] = {pozitie}
 
-    # print("pozitii:", pozitii)        
-
     # gasire elemente care se afla pe mai multe pozitii
     # pe una dintre pozitii se pune un element lipsa
     k=0
     for element, valoare in pozitii.items():
 
         if(len(valoare) > 1):
-            # print(element, valoare)
             i = random.choice(list(valoare))
             copil[i] = lipsa[k]
             k += 1
             
     return copil    
 
-# print(corecteaza_cromozom([0,1,2,0]))
-
 def exista_duplicate(copil):
     return len(set(copil)) < len(copil)
-#print(exista_duplicate([1,2,3,1]))
 
 def crossover(parinte1, parinte2):
 
-    #print("\nparinti:", parinte1, parinte2)
     taietura = random.randint(0,len(parinte1)-1)
-    #print(taietura)
 
     copil1 =  parinte1[:taietura] + parinte2[taietura:] 
     copil2 =  parinte2[:taietura] + parinte1[taietura:] 
 
     if exista_duplicate(copil1):
-            # print(copil1)
             copil1 = corecteaza_cromozom(copil1)
     if exista_duplicate(copil2):
-            # print(copil2)
             copil2 = corecteaza_cromozom(copil2)
 
-    # print("copii", copil1, copil2)
     return (copil1, copil2)
 
-#crossover([0,1,2,3], [3,1,2,0])
 def generare_copii(parinti):
 
     copii = []
@@ -161,11 +146,9 @@ def mutatie_cromozom(individ):
 
     # folosire sample pt ca sa nu avem ambele pozitii la fel
     poz1, poz2 = random.sample(range(len(cromozom)), 2)
-    # print("pozitii", pozitii)
 
     # interschimbare elemente de pe pozitiile generate
     cromozom[poz1], cromozom[poz2] = cromozom[poz2], cromozom[poz1]
-    # print(cromozom)
 
     # adaugare cromozom schimbat la individ
     individ.cromozom = cromozom
@@ -179,10 +162,6 @@ def mutatie(populatie, rata_mutatie):
             # recalculare fitness
             individ.calc_fitness()
             mutatii += 1
-
-    # print("Mutatii efectuate:", mutatii)
-
-#mutatie( [Individ([0,2,1,3]), Individ([2,1,3,0])] )
 
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
