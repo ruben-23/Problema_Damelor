@@ -63,18 +63,34 @@ def generare_populatie_initiala(nr_indivizi, n):
     
     return populatie
 
+def selectie_turnir(populatie, dim_turnir, dim_populatie):
+
+    populatie_obtinuta = []
+
+    for i in range(dim_populatie):
+        # selectare un numar dat de indivizi pentru turnir
+        indivizi_selectati = random.sample(populatie, dim_turnir)
+
+        # castiga individul cu cel mai mic fitness
+        individ_castigator = min(indivizi_selectati, key=lambda individ: individ.fitness)
+
+        populatie_obtinuta.append(individ_castigator)
+
+    return populatie_obtinuta
+
 def selectare_parinti(populatie):
 
     parinti = []
     n = len(populatie)
 
     for i in range(n//2):
-
-        parinte1 = populatie[random.randint(0,len(populatie)-1)]
-        populatie.remove(parinte1)                      
         
-        parinte2 = populatie[random.randint(0,len(populatie)-1)]
-        populatie.remove(parinte2)
+        parinte1 = selectie_turnir(populatie, 4, 1)[0]
+        parinte2 = selectie_turnir(populatie, 4, 1)[0]
+
+        # verificare ca sa nu fie parintii la fel
+        while parinte1 == parinte2:
+            parinte2 = selectie_turnir(populatie, 4, 1)[0]  
 
         parinti.append((parinte1, parinte2))
 
@@ -188,10 +204,12 @@ def factorial(n):
     return n * factorial(n-1) 
 
 def start():
-    nr_indivizi = 1000
-    n = 10         
+    nr_indivizi = 100
+    n = 8
     max_indivizi = factorial(n)
     rata_mutatie = 0.5
+    dim_turnir = 4 # nr de indivizi pt selectia turnir
+    dim_populatie = nr_indivizi//2 # nr de indivizi returnati dupa selectia turnir
     
     # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
     if( nr_indivizi > max_indivizi ):
@@ -199,8 +217,9 @@ def start():
             \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
         exit(1)
 
-    populatie = generare_populatie_initiala(nr_indivizi, n)
-    generatie = 1
+    populatie_initiala = generare_populatie_initiala(nr_indivizi, n)
+    populatie = selectie_turnir(populatie_initiala, dim_turnir, dim_populatie)
+    generatie = 1 
 
     while not verifica_solutii(populatie):
         parinti = selectare_parinti(populatie)
@@ -215,29 +234,3 @@ def start():
         print(i.cromozom, i.fitness)
         
 start()
-
-
-# populatie = generare_populatie_initiala(nr_indivizi, n)
-#for individ in populatie:
-    #print(individ.cromozom, individ.fitness)
-
-# parinti = selectare_parinti(populatie)
-
-#for (p1, p2) in parinti:
-    #print(p1.cromozom, p2.cromozom)
-
-#print("Parinti generati: ", len(parinti))
-# copii = generare_copii(parinti)
-# mutatie(copii, rata_mutatie)
-
-# for copil in copii:
-#     print(copil.cromozom, copil.fitness)
-
-# solutii = verifica_solutii(copii)
-# print("Solutii copii: ", len(solutii))
-# for i in solutii:
-#     print(i.cromozom)
-
-# print("Copii obtinuti: ", len(copii))
-# print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
-# print("Indivizi in populatie:", len(populatie))
