@@ -56,7 +56,6 @@ def generare_populatie_initiala(nr_indivizi, n):
 
     # se genereaza un set de cromozomi
     cromozomi = generare_cromozomi(nr_indivizi, n)
-    # print("cromozomi", cromozomi, type(cromozomi))
 
     # se formeaza o populatie de indivizi folosind cromozomii obtinuti
     for cromozom in cromozomi:
@@ -64,20 +63,34 @@ def generare_populatie_initiala(nr_indivizi, n):
     
     return populatie
 
+def selectie_turnir(populatie, dim_turnir, dim_populatie):
+
+    populatie_obtinuta = []
+
+    for i in range(dim_populatie):
+        # selectare un numar dat de indivizi pentru turnir
+        indivizi_selectati = random.sample(populatie, dim_turnir)
+
+        # castiga individul cu cel mai mic fitness
+        individ_castigator = min(indivizi_selectati, key=lambda individ: individ.fitness)
+
+        populatie_obtinuta.append(individ_castigator)
+
+    return populatie_obtinuta
+
 def selectare_parinti(populatie):
 
     parinti = []
     n = len(populatie)
 
     for i in range(n//2):
-
-        parinte1 = populatie[random.randint(0,len(populatie)-1)]
-        # print(parinte1.cromozom)
-        populatie.remove(parinte1)                      
         
-        parinte2 = populatie[random.randint(0,len(populatie)-1)]
-        # print(parinte2.cromozom)
-        populatie.remove(parinte2)
+        parinte1 = selectie_turnir(populatie, 4, 1)[0]
+        parinte2 = selectie_turnir(populatie, 4, 1)[0]
+
+        # verificare ca sa nu fie parintii la fel
+        while parinte1 == parinte2:
+            parinte2 = selectie_turnir(populatie, 4, 1)[0]  
 
         parinti.append((parinte1, parinte2))
 
@@ -102,47 +115,35 @@ def corecteaza_cromozom(copil):
         else:
             pozitii[element] = {pozitie}
 
-    # print("pozitii:", pozitii)        
-
     # gasire elemente care se afla pe mai multe pozitii
     # pe una dintre pozitii se pune un element lipsa
     k=0
     for element, valoare in pozitii.items():
 
         if(len(valoare) > 1):
-            # print(element, valoare)
             i = random.choice(list(valoare))
             copil[i] = lipsa[k]
             k += 1
             
     return copil    
 
-# print(corecteaza_cromozom([0,1,2,0]))
-
 def exista_duplicate(copil):
     return len(set(copil)) < len(copil)
-#print(exista_duplicate([1,2,3,1]))
 
 def crossover(parinte1, parinte2):
 
-    #print("\nparinti:", parinte1, parinte2)
     taietura = random.randint(0,len(parinte1)-1)
-    #print(taietura)
 
     copil1 =  parinte1[:taietura] + parinte2[taietura:] 
     copil2 =  parinte2[:taietura] + parinte1[taietura:] 
 
     if exista_duplicate(copil1):
-            # print(copil1)
             copil1 = corecteaza_cromozom(copil1)
     if exista_duplicate(copil2):
-            # print(copil2)
             copil2 = corecteaza_cromozom(copil2)
 
-    # print("copii", copil1, copil2)
     return (copil1, copil2)
 
-#crossover([0,1,2,3], [3,1,2,0])
 def generare_copii(parinti):
 
     copii = []
@@ -161,11 +162,9 @@ def mutatie_cromozom(individ):
 
     # folosire sample pt ca sa nu avem ambele pozitii la fel
     poz1, poz2 = random.sample(range(len(cromozom)), 2)
-    # print("pozitii", pozitii)
 
     # interschimbare elemente de pe pozitiile generate
     cromozom[poz1], cromozom[poz2] = cromozom[poz2], cromozom[poz1]
-    # print(cromozom)
 
     # adaugare cromozom schimbat la individ
     individ.cromozom = cromozom
@@ -179,10 +178,6 @@ def mutatie(populatie, rata_mutatie):
             # recalculare fitness
             individ.calc_fitness()
             mutatii += 1
-
-    # print("Mutatii efectuate:", mutatii)
-
-#mutatie( [Individ([0,2,1,3]), Individ([2,1,3,0])] )
 
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii
@@ -209,10 +204,12 @@ def factorial(n):
     return n * factorial(n-1) 
 
 def start():
-    nr_indivizi = 1000
-    n = 10         
+    nr_indivizi = 100
+    n = 8
     max_indivizi = factorial(n)
     rata_mutatie = 0.5
+    dim_turnir = 4 # nr de indivizi pt selectia turnir
+    dim_populatie = nr_indivizi//2 # nr de indivizi returnati dupa selectia turnir
     
     # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
     if( nr_indivizi > max_indivizi ):
@@ -220,8 +217,9 @@ def start():
             \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
         exit(1)
 
-    populatie = generare_populatie_initiala(nr_indivizi, n)
-    generatie = 1
+    populatie_initiala = generare_populatie_initiala(nr_indivizi, n)
+    populatie = selectie_turnir(populatie_initiala, dim_turnir, dim_populatie)
+    generatie = 1 
 
     while not verifica_solutii(populatie):
         parinti = selectare_parinti(populatie)
@@ -236,29 +234,3 @@ def start():
         print(i.cromozom, i.fitness)
         
 start()
-
-
-# populatie = generare_populatie_initiala(nr_indivizi, n)
-#for individ in populatie:
-    #print(individ.cromozom, individ.fitness)
-
-# parinti = selectare_parinti(populatie)
-
-#for (p1, p2) in parinti:
-    #print(p1.cromozom, p2.cromozom)
-
-#print("Parinti generati: ", len(parinti))
-# copii = generare_copii(parinti)
-# mutatie(copii, rata_mutatie)
-
-# for copil in copii:
-#     print(copil.cromozom, copil.fitness)
-
-# solutii = verifica_solutii(copii)
-# print("Solutii copii: ", len(solutii))
-# for i in solutii:
-#     print(i.cromozom)
-
-# print("Copii obtinuti: ", len(copii))
-# print("Exista copii cu elemente duplicate: ", exista_duplicate_copii(copii))
-# print("Indivizi in populatie:", len(populatie))
