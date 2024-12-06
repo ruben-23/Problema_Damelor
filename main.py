@@ -74,6 +74,7 @@ def selectie_turnir(populatie, dim_turnir, dim_populatie):
         # castiga individul cu cel mai mic fitness
         individ_castigator = min(indivizi_selectati, key=lambda individ: individ.fitness)
 
+        populatie.remove(individ_castigator)
         populatie_obtinuta.append(individ_castigator)
 
     return populatie_obtinuta
@@ -203,8 +204,24 @@ def factorial(n):
     
     return n * factorial(n-1) 
 
+
+
+def verif_cromozomi_unici(cromozomi):
+    seen = set()
+    
+    for cromozom in cromozomi:
+        
+        cromozom_tuplu = tuple(cromozom)
+            
+        if cromozom_tuplu in seen:
+            return False 
+        
+        seen.add(cromozom_tuplu)
+    
+    return True
+
 def start():
-    nr_indivizi = 100
+    nr_indivizi = 40320
     n = 8
     max_indivizi = factorial(n)
     rata_mutatie = 0.5
@@ -232,5 +249,10 @@ def start():
     print(f'Solutii gasite in generatia {generatie}: {len(solutii)}')
     for i in solutii:
         print(i.cromozom, i.fitness)
+
+    cromozomi = []
+    for i in solutii:
+        cromozomi.append(i.cromozom)
+    print(verif_cromozomi_unici(cromozomi))    
         
 start()
