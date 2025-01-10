@@ -173,13 +173,11 @@ def mutatie_cromozom(individ):
 
 def mutatie(populatie, rata_mutatie):
 
-    # mutatii=0
     for individ in populatie:
         if random.random() < rata_mutatie:
             mutatie_cromozom(individ)
             # recalculare fitness
             individ.calc_fitness()
-            # mutatii += 1
 
 def verifica_solutii(populatie):
     # verifica daca in populatie exista solutii si le returneaza daca au fost
