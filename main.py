@@ -171,16 +171,16 @@ def mutatie_cromozom(individ):
 
 def mutatie(populatie, rata_mutatie):
 
-    mutatii=0
+    # mutatii=0
     for individ in populatie:
         if random.random() < rata_mutatie:
             mutatie_cromozom(individ)
             # recalculare fitness
             individ.calc_fitness()
-            mutatii += 1
+            # mutatii += 1
 
 def verifica_solutii(populatie):
-    # verifica daca in populatie exista solutii
+    # verifica daca in populatie exista solutii si le returneaza daca au fost
     solutii = []
 
     for individ in populatie:
@@ -205,12 +205,13 @@ def factorial(n):
 
 def start():
     nr_indivizi = 100
-    n = 8
+    n = 10
     max_indivizi = factorial(n)
     rata_mutatie = 0.5
     dim_turnir = 4 # nr de indivizi pt selectia turnir
     dim_populatie = nr_indivizi//2 # nr de indivizi returnati dupa selectia turnir
-    
+    generatie_maxima = 100 # numarul generatiei la care se opreste algoritmul 
+
     # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
     if( nr_indivizi > max_indivizi ):
         print(f"Nu se pot genera {nr_indivizi} de indivizi.\
@@ -220,17 +221,30 @@ def start():
     populatie_initiala = generare_populatie_initiala(nr_indivizi, n)
     populatie = selectie_turnir(populatie_initiala, dim_turnir, dim_populatie)
     generatie = 1 
+    cel_mai_bun_individ = None
 
-    while not verifica_solutii(populatie):
+    while not verifica_solutii(populatie) and generatie < generatie_maxima:
         parinti = selectare_parinti(populatie)
         copii = generare_copii(parinti)
         mutatie(copii, rata_mutatie)
+
+        # actualizare cel mai bun individ
+        for individ in copii:
+            if cel_mai_bun_individ is None or individ.fitness < cel_mai_bun_individ.fitness:
+                cel_mai_bun_individ = individ
+
         generatie += 1
         populatie = copii
     
     solutii = verifica_solutii(populatie)
-    print(f'Solutii gasite in generatia {generatie}: {len(solutii)}')
-    for i in solutii:
-        print(i.cromozom, i.fitness)
+    
+    if len(solutii)>0:
+        print(f'Solutii gasite in generatia {generatie}: {len(solutii)}')
+        for i in solutii:
+            print(i.cromozom, i.fitness)
+    else:
+        print(f'Nu s-au gasit solutii dupa {generatie_maxima} de generatii.')
+        if cel_mai_bun_individ:
+            print(f'Cea mai buna solutie gasita: {cel_mai_bun_individ.cromozom}, fitness: {cel_mai_bun_individ.fitness}')
         
 start()
