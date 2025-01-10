@@ -1,4 +1,6 @@
 import random 
+import time
+import tkinter as tk
 
 class Individ:
 
@@ -203,20 +205,90 @@ def factorial(n):
     
     return n * factorial(n-1) 
 
+class ChessBoard:
+    def __init__(self, master, arrangements, generatie):
+        self.master = master
+        self.arrangements = arrangements
+        self.current_index = 0
+        self.generatie = generatie
+        
+        self.total_label = tk.Label(master, text=f"Solutii gasite in generatia {self.generatie}: {len(arrangements)}", font=("Arial", 14))
+        self.total_label.pack()
+        self.current_label = tk.Label(master, text=f"Solutia curenta: {arrangements[0].cromozom}", font=("Arial", 14))
+        self.current_label.pack()
+        
+        self.canvas_size = 500  
+        self.canvas = tk.Canvas(master, width=self.canvas_size, height=self.canvas_size) 
+        self.canvas.pack()
+        
+        self.next_button = tk.Button(master, text="Next", command=self.show_next)
+        self.next_button.pack()
+        
+        self.queen_image = tk.PhotoImage(file="regina.png")
+        
+        self.draw_chess_board(arrangements[self.current_index].cromozom)
+
+    def draw_chess_board(self, queens):
+        self.canvas.delete("all")
+        
+        num_queens = len(queens)
+        square_size = self.canvas_size // (num_queens + 1)  
+        offset = square_size // 2  
+
+        # desenare numere pentru randuri
+        for row in range(num_queens):
+            self.canvas.create_text(
+                offset // 2, row * square_size + square_size // 2 + offset,
+                text=str(row), font=("Arial", 14), fill="black"
+            )
+        
+        # desenare numere pentru coloane
+        for col in range(num_queens):
+            self.canvas.create_text(
+                col * square_size + square_size // 2 + offset, offset // 2,
+                text=str(col), font=("Arial", 14), fill="black"
+            )
+        
+        # desenare tabel
+        for row in range(num_queens):
+            for col in range(num_queens):
+                color = "white" if (row + col) % 2 == 0 else "black"
+                self.canvas.create_rectangle(
+                    col * square_size + offset, row * square_size + offset,
+                    col * square_size + square_size + offset, row * square_size + square_size + offset,
+                    fill=color
+                )
+        
+        # desenare regine
+        for col, row in enumerate(queens):
+            if row != -1:
+                x_center = col * square_size + square_size // 2 + offset
+                y_center = row * square_size + square_size // 2 + offset
+                self.canvas.create_image(x_center, y_center, image=self.queen_image)
+
+    def show_next(self):
+        self.current_index = (self.current_index + 1) % len(self.arrangements)
+        current_arrangement = self.arrangements[self.current_index].cromozom
+        self.draw_chess_board(current_arrangement)
+        self.current_label.config(text=f"Solutia curenta: {current_arrangement}")
+
+
 def start():
-    nr_indivizi = 100
-    n = 10
+    nr_indivizi = 1000
+    n = 12
     max_indivizi = factorial(n)
     rata_mutatie = 0.5
     dim_turnir = 4 # nr de indivizi pt selectia turnir
     dim_populatie = nr_indivizi//2 # nr de indivizi returnati dupa selectia turnir
-    generatie_maxima = 100 # numarul generatiei la care se opreste algoritmul 
+    generatie_maxima = 200 # numarul generatiei la care se opreste algoritmul 
 
     # nr_indivizi <= n!, deoarece pot fi generati doar n! indivizi distincti
     if( nr_indivizi > max_indivizi ):
         print(f"Nu se pot genera {nr_indivizi} de indivizi.\
             \nPentru o tabela de {n}x{n} se pot genera maxim {max_indivizi} de indivizi")
         exit(1)
+
+    timp_start = time.time()
 
     populatie_initiala = generare_populatie_initiala(nr_indivizi, n)
     populatie = selectie_turnir(populatie_initiala, dim_turnir, dim_populatie)
@@ -236,6 +308,8 @@ def start():
         generatie += 1
         populatie = copii
     
+    timp_executie = time.time() - timp_start
+
     solutii = verifica_solutii(populatie)
     
     if len(solutii)>0:
@@ -246,5 +320,13 @@ def start():
         print(f'Nu s-au gasit solutii dupa {generatie_maxima} de generatii.')
         if cel_mai_bun_individ:
             print(f'Cea mai buna solutie gasita: {cel_mai_bun_individ.cromozom}, fitness: {cel_mai_bun_individ.fitness}')
+            solutii.append(cel_mai_bun_individ) #adaugare in solutii pentru a putea fi afisat in interfata
+
+    print(f'Timp de executie: {timp_executie:.2f} secunde')
+
+    root = tk.Tk()
+    root.title("Chess Board")
+    chess_board = ChessBoard(root, solutii, generatie)
+    root.mainloop()
         
 start()
